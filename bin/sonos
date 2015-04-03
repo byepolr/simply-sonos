@@ -1,0 +1,88 @@
+#!/usr/bin/env node
+require(__dirname+"/../lib/commands");
+var Network = require(__dirname+"/../lib/network");
+var network = new Network();
+
+var optimist = require('optimist')
+	.usage('Command List:\n--------------------------------\n'+commandsAsString);
+
+var argv = _processArguments(optimist.argv);
+function _processArguments(argv){
+
+	if(argv._ instanceof Array && argv._.length > 0){
+		switch(argv._[0]){
+			case "discover":
+				console.log("Discovery mode");
+				network.udp.discover({"timeout":5000}, function(error, devices){
+					if(error){
+						console.log(error);
+					}else{
+						console.log("Found devices: ");
+						for(var key in devices){
+							console.log("• "+devices[key]);
+						}
+					}
+					process.exit(error);
+				});
+				break;
+
+			case "help":
+				optimist.showHelp();
+				break;
+
+			default:
+				var cmdName = argv._[0];
+				if(this[cmdName] && typeof this[cmdName].send === 'function'){
+
+					var options = {
+						ipAddress: (argv['i']) ? argv['i'] : '',
+						port:      (argv['p'] != null) ? argv['p'] : this[cmdName].port,
+						uri:       (argv['u'] != null) ? argv['u'] : this[cmdName].uri,
+						// location:  (argv['l'] != null) ? argv['l'] : this[cmdName].location,
+						status:    (argv['s'] != null) ? argv['s'] : this[cmdName].satus,
+						level:    (argv['l'] != null) ? argv['l'] : this[cmdName].level
+					}
+
+
+					this[cmdName].send(options, function callback(error, response){
+						if(error){
+							console.log(error);
+						}else if(response){
+							console.log(stringify(response));
+						}else{
+							console.log("Command finished successfully");
+						}
+					});
+				}else{
+					console.log("Could not run the command that you supplied.\n");
+					optimist.showHelp();
+				}
+				break;
+		}
+	}
+}
+
+function stringify(obj, indent){
+	if(typeof obj === "string") { return obj; }
+
+	indent = (indent != null) ? indent : 0;
+	var str = '';
+	for(var key in obj){
+		str += tabSpacing(indent)+key+": ";
+		if(typeof obj[key] === "string"){
+			str += obj[key]+"\n"
+		}else if(typeof obj[key] !== "function"){
+			str += "\n"+stringify(obj[key], indent+1);
+		}
+	}
+	return str;
+}
+
+function tabSpacing(indent){
+	var str = "";
+	for(var i=0; i<indent; i++){
+		str += "--";
+	}
+	if(indent > 0){ str += " "; }
+	return str;
+}

@@ -1,0 +1,20 @@
+{
+  "name": "NodeSonos",
+  "version": "0.0.1",
+  "description": "Control your sonos with NodeJS",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "xml2js": "~0.4.4",
+    "optimist": "0.6.x",
+    "async": "0.9.0"
+  },
+  "scripts": {
+    "test": "echo 'Error: no test specified' && exit 1"
+  },
+  "bin": { "sonos": "./bin/sonos"},
+  "author": "Jason W. Jones",
+  "license": "MIT"
+}

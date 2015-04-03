@@ -1,0 +1,9 @@
+require(__dirname+"/../lib/commands");
+var Device = require(__dirname+"/../lib/device");
+
+data = '<?xml version="1.0" ?>\
+<?xml-stylesheet type="text/xsl" href="/xml/review.xsl"?><ZPSupportInfo type="User"><ZPInfo><ZoneName>502 RM</ZoneName><ZoneIcon>x-rincon-roomicon:office</ZoneIcon><Configuration>1</Configuration><LocalUID>RINCON_000E58F01BEC01400</LocalUID><SerialNumber>00-0E-58-F0-1B-EC:D</SerialNumber><SoftwareVersion>28.1-83040</SoftwareVersion><MinCompatibleVersion>27.0-00000</MinCompatibleVersion><LegacyCompatibleVersion>24.0-0000</LegacyCompatibleVersion><HardwareVersion>1.8.1.2-1</HardwareVersion><DspVersion>0.25.3</DspVersion><HwFeatures>0x0</HwFeatures><IPAddress>10.1.1.26</IPAddress><MACAddress>00:0E:58:F0:1B:EC</MACAddress><Copyright>© 2004-2014 Sonos, Inc. All Rights Reserved.</Copyright><ExtraInfo>OTP: </ExtraInfo><HTAudioInCode>0</HTAudioInCode><IdxTrk></IdxTrk></ZPInfo></ZPSupportInfo>\
+<?xml version="1.0" ?>\
+<?xml-stylesheet type="text/xsl" href="/xml/review.xsl"?><ZPSupportInfo type="User"><ZPInfo><ZoneName>501 PS</ZoneName><ZoneIcon>x-rincon-roomicon:living</ZoneIcon><Configuration>1</Configuration><LocalUID>RINCON_000E58F01BDE01400</LocalUID><SerialNumber>00-0E-58-F0-1B-DE:G</SerialNumber><SoftwareVersion>28.1-83040</SoftwareVersion><MinCompatibleVersion>27.0-00000</MinCompatibleVersion><LegacyCompatibleVersion>24.0-0000</LegacyCompatibleVersion><HardwareVersion>1.8.1.2-1</HardwareVersion><DspVersion>0.25.3</DspVersion><HwFeatures>0x0</HwFeatures><IPAddress>10.1.10.32</IPAddress><MACAddress>00:0E:58:F0:1B:DE</MACAddress><Copyright>© 2004-2014 Sonos, Inc. All Rights Reserved.</Copyright><ExtraInfo>OTP: </ExtraInfo><HTAudioInCode>0</HTAudioInCode><IdxTrk></IdxTrk></ZPInfo></ZPSupportInfo>';
+var device = new Device({"raw": data});
+console.log(''+device);
