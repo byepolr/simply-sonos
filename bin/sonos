@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-require(__dirname+"/../lib/commands");
-var Network = require(__dirname+"/../lib/network");
-var network = new Network();
+var simplySonos = require("../app");
+var network = new simplySonos.Network();
 
 var optimist = require('optimist')
 	.usage('Command List:\n--------------------------------\n'+commandsAsString);
