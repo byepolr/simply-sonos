@@ -2,7 +2,7 @@
   "name": "simply-sonos",
   "version": "0.0.1",
   "description": "Control your sonos with NodeJS",
-  "main": "index.js",
+  "main": "app.js",
   "directories": {
     "test": "tests"
   },
