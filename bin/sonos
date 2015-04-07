@@ -1,29 +1,15 @@
 #!/usr/bin/env node
 var simplySonos = require("../app");
-var network = new simplySonos.Network();
+var network = simplySonos.network;
 
 var optimist = require('optimist')
-	.usage('Command List:\n--------------------------------\n'+commandsAsString);
+	.usage('Command List:\n--------------------------------\n'+simplySonos);
 
 var argv = _processArguments(optimist.argv);
 function _processArguments(argv){
 
 	if(argv._ instanceof Array && argv._.length > 0){
 		switch(argv._[0]){
-			case "discover":
-				console.log("Discovery mode");
-				network.udp.discover({"timeout":5000}, function(error, devices){
-					if(error){
-						console.log(error);
-					}else{
-						console.log("Found devices: ");
-						for(var key in devices){
-							console.log("• "+devices[key]);
-						}
-					}
-					process.exit(error);
-				});
-				break;
 
 			case "help":
 				optimist.showHelp();
@@ -31,19 +17,19 @@ function _processArguments(argv){
 
 			default:
 				var cmdName = argv._[0];
-				if(this[cmdName] && typeof this[cmdName].send === 'function'){
+				if(simplySonos[cmdName] && typeof simplySonos[cmdName].send === 'function'){
 
 					var options = {
 						ipAddress: (argv['i']) ? argv['i'] : '',
-						port:      (argv['p'] != null) ? argv['p'] : this[cmdName].port,
-						uri:       (argv['u'] != null) ? argv['u'] : this[cmdName].uri,
-						// location:  (argv['l'] != null) ? argv['l'] : this[cmdName].location,
-						status:    (argv['s'] != null) ? argv['s'] : this[cmdName].satus,
-						level:    (argv['l'] != null) ? argv['l'] : this[cmdName].level
+						port:      (argv['p'] != null) ? argv['p'] : simplySonos[cmdName].port,
+						uri:       (argv['u'] != null) ? argv['u'] : simplySonos[cmdName].uri,
+						// location:  (argv['l'] != null) ? argv['l'] : simplySonos[cmdName].location,
+						status:    (argv['s'] != null) ? argv['s'] : simplySonos[cmdName].satus,
+						level:    (argv['l'] != null) ? argv['l'] : simplySonos[cmdName].level
 					}
 
 
-					this[cmdName].send(options, function callback(error, response){
+					simplySonos[cmdName].send(options, function callback(error, response){
 						if(error){
 							console.log(error);
 						}else if(response){
@@ -51,6 +37,7 @@ function _processArguments(argv){
 						}else{
 							console.log("Command finished successfully");
 						}
+						process.exit(error);
 					});
 				}else{
 					console.log("Could not run the command that you supplied.\n");
@@ -67,11 +54,13 @@ function stringify(obj, indent){
 	indent = (indent != null) ? indent : 0;
 	var str = '';
 	for(var key in obj){
-		str += tabSpacing(indent)+key+": ";
-		if(typeof obj[key] === "string"){
-			str += obj[key]+"\n"
-		}else if(typeof obj[key] !== "function"){
-			str += "\n"+stringify(obj[key], indent+1);
+		if(key !== "toString"){
+			str += tabSpacing(indent)+key+": ";
+			if(typeof obj[key] === "string"){
+				str += obj[key]+"\n"
+			}else if(typeof obj[key] !== "function"){
+				str += "\n"+stringify(obj[key], indent+1);
+			}
 		}
 	}
 	return str;

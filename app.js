@@ -1,2 +1,2 @@
-require("./lib/commands");
-module.exports.Network = require("./lib/network");
+var commands = require("./lib/commands");
+module.exports = commands;
